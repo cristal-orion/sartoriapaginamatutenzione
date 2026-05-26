@@ -10,6 +10,23 @@
 {
   "current": {
     "theme_color": "#14213D",
+    "sections": {
+      "maintenance-atelier": {
+        "type": "maintenance-atelier",
+        "settings": {
+          "wordmark": "Sartoria Condotti",
+          "show_lang": true,
+          "eyebrow": "Napoli · Atelier · Dal 1954",
+          "heading_line1": "Stiamo prendendo",
+          "heading_line2": "le misure.",
+          "subheading": "<p>I nostri sarti stanno lavorando per offrirti un'esperienza online all'altezza di Sartoria Condotti.</p>",
+          "bg_color": "#14213d",
+          "fg_color": "#f4efe6",
+          "accent_color": "#d4a24c",
+          "show_swan": true
+        }
+      }
+    },
     "content_for_index": [],
     "blocks": {
       "855628211100114053": {
