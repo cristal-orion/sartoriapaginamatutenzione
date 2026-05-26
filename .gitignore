@@ -1,0 +1,8 @@
+# Anteprime locali / sistema
+_*.html
+.DS_Store
+Thumbs.db
+
+# Shopify CLI
+.shopify
+state.json

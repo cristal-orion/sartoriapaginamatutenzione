@@ -1,0 +1,40 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Sartoria Condotti — Manutenzione",
+    "theme_version": "1.0.0",
+    "theme_author": "Affinity",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/manual/online-store/themes"
+  },
+  {
+    "name": "Generale",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "color",
+        "id": "theme_color",
+        "label": "Colore barra browser (mobile)",
+        "default": "#14213D"
+      }
+    ]
+  },
+  {
+    "name": "Klaviyo (popup email)",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Cattura email + sconto sono gestiti dal popup Klaviyo. Incolla qui la Public API Key (Company ID, es. ABC123) per caricare lo script ovunque, anche sulla password page. Lascia vuoto se Klaviyo è già collegato come app/app embed."
+      },
+      {
+        "type": "text",
+        "id": "klaviyo_public_key",
+        "label": "Klaviyo Public API Key"
+      }
+    ]
+  }
+]

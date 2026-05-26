@@ -1,0 +1,505 @@
+{% liquid
+  assign s = section.settings
+  assign bg = s.bg_color
+  assign fg = s.fg_color
+  assign accent = s.accent_color
+%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&display=swap"
+>
+
+{%- comment -%} Language toggle (pure CSS): IT default, EN secondary {%- endcomment -%}
+<input type="radio" name="mt-lang" id="mt-it" class="mt-lang-radio" checked>
+<input type="radio" name="mt-lang" id="mt-en" class="mt-lang-radio">
+
+<section
+  class="mt"
+  style="
+    --mt-bg: {{ bg.red }} {{ bg.green }} {{ bg.blue }};
+    --mt-fg: {{ fg.red }} {{ fg.green }} {{ fg.blue }};
+    --mt-accent: {{ accent.red }} {{ accent.green }} {{ accent.blue }};
+    --mt-swan-url: url('{{ 'cigno.svg' | asset_url }}');
+  "
+>
+  {%- if s.show_lang -%}
+    <nav class="mt__lang" aria-label="Lingua / Language">
+      <label for="mt-it" class="mt__flag" data-set="it" tabindex="0">
+        <span class="mt__flag-emoji" aria-hidden="true">🇮🇹</span><span>IT</span>
+      </label>
+      <span class="mt__lang-sep" aria-hidden="true"></span>
+      <label for="mt-en" class="mt__flag" data-set="en" tabindex="0">
+        <span class="mt__flag-emoji" aria-hidden="true">🇬🇧</span><span>EN</span>
+      </label>
+    </nav>
+  {%- endif -%}
+
+  {%- if s.show_swan -%}
+    <span class="mt__swan" aria-hidden="true"></span>
+  {%- endif -%}
+
+  <div class="mt__inner">
+    <header class="mt__brand mt-reveal" style="--d: 0ms">
+      {%- if s.logo != blank -%}
+        {{
+          s.logo
+          | image_url: width: 480
+          | image_tag: widths: '160, 240, 320, 480', class: 'mt__logo', alt: s.wordmark, loading: 'eager'
+        }}
+      {%- else -%}
+        <span class="mt__mark" aria-hidden="true"></span>
+        <span class="mt__wordmark">{{ s.wordmark }}</span>
+      {%- endif -%}
+    </header>
+
+    {%- if s.eyebrow != blank -%}
+      <p class="mt__eyebrow mt-reveal" style="--d: 120ms">
+        <span class="mt__eyebrow-tick" aria-hidden="true"></span>
+        <span class="i18n it">{{ s.eyebrow }}</span><span class="i18n en">Naples · Atelier · Since 1954</span>
+      </p>
+    {%- endif -%}
+
+    <h1 class="mt__heading">
+      <span class="mt__heading-line mt-reveal" style="--d: 220ms">
+        <span class="i18n it">{{ s.heading_line1 }}</span><span class="i18n en">We're taking</span>
+      </span>
+      {%- if s.heading_line2 != blank -%}
+        <span class="mt__heading-line mt__heading-line--accent mt-reveal" style="--d: 320ms">
+          <span class="i18n it">{{ s.heading_line2 }}</span><span class="i18n en">your measurements.</span>
+        </span>
+      {%- endif -%}
+    </h1>
+
+    <div class="mt__stitch mt-stitch" aria-hidden="true"></div>
+
+    {%- if s.subheading != blank -%}
+      <div class="mt__sub mt-reveal" style="--d: 560ms">
+        <div class="i18n it">{{ s.subheading }}</div>
+        <div class="i18n en"><p>Our tailors are at work to bring you an online experience worthy of Sartoria Condotti.</p></div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+  (function () {
+    try {
+      var KEY = 'sc-mt-lang';
+      var it = document.getElementById('mt-it');
+      var en = document.getElementById('mt-en');
+      if (!it || !en) return;
+      var saved = localStorage.getItem(KEY);
+      if (saved === 'en') en.checked = true;
+      it.addEventListener('change', function () { try { localStorage.setItem(KEY, 'it'); } catch (e) {} });
+      en.addEventListener('change', function () { try { localStorage.setItem(KEY, 'en'); } catch (e) {} });
+    } catch (e) {}
+  })();
+</script>
+
+{% stylesheet %}
+  body {
+    margin: 0;
+    background-color: rgb(var(--mt-bg, 20 33 61));
+  }
+
+  /* ---- Language toggle (CSS only) ---- */
+  .mt-lang-radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .i18n.en {
+    display: none;
+  }
+
+  #mt-en:checked ~ .mt .i18n.it {
+    display: none;
+  }
+
+  #mt-en:checked ~ .mt .i18n.en {
+    display: revert;
+  }
+
+  .mt__lang {
+    position: absolute;
+    top: clamp(18px, 4vw, 40px);
+    right: clamp(18px, 4vw, 40px);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .mt__flag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 4px 2px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: rgb(var(--mt-fg) / 0.5);
+    transition: color 150ms ease;
+  }
+
+  .mt__flag:hover {
+    color: rgb(var(--mt-fg) / 0.85);
+  }
+
+  .mt__flag-emoji {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .mt__lang-sep {
+    width: 1px;
+    height: 12px;
+    background-color: rgb(var(--mt-fg) / 0.25);
+  }
+
+  #mt-it:checked ~ .mt .mt__flag[data-set='it'],
+  #mt-en:checked ~ .mt .mt__flag[data-set='en'] {
+    color: rgb(var(--mt-accent));
+  }
+
+  .mt__flag:focus-visible {
+    outline: 1px solid rgb(var(--mt-accent));
+    outline-offset: 2px;
+  }
+
+  /* ---- Section ---- */
+  .mt {
+    --mt-pad: clamp(28px, 6vw, 96px);
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background-color: rgb(var(--mt-bg));
+    color: rgb(var(--mt-fg));
+    padding: var(--mt-pad);
+    isolation: isolate;
+    box-sizing: border-box;
+  }
+
+  .mt *,
+  .mt *::before,
+  .mt *::after {
+    box-sizing: border-box;
+  }
+
+  .mt__swan {
+    position: absolute;
+    right: -12%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: min(78vh, 70vw);
+    aspect-ratio: 1 / 1;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    background-color: rgb(var(--mt-accent));
+    -webkit-mask-image: var(--mt-swan-url);
+    mask-image: var(--mt-swan-url);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    animation: mt-swan-in 1600ms cubic-bezier(0.22, 1, 0.36, 1) 200ms forwards;
+  }
+
+  .mt__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 760px;
+  }
+
+  .mt__brand {
+    margin-block-end: clamp(36px, 8vh, 88px);
+  }
+
+  .mt__logo {
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: 64px;
+    max-width: 240px;
+  }
+
+  .mt__mark {
+    display: block;
+    width: clamp(46px, 6vw, 60px);
+    height: clamp(46px, 6vw, 60px);
+    margin-block-end: 14px;
+    background-color: rgb(var(--mt-accent));
+    -webkit-mask: var(--mt-swan-url) center / contain no-repeat;
+    mask: var(--mt-swan-url) center / contain no-repeat;
+  }
+
+  .mt__wordmark {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: 'opsz' 40;
+    font-size: 0.95rem;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: rgb(var(--mt-fg));
+  }
+
+  .mt__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    margin: 0 0 clamp(18px, 3vh, 28px);
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: rgb(var(--mt-fg) / 0.72);
+  }
+
+  .mt__eyebrow-tick {
+    width: 7px;
+    height: 7px;
+    transform: rotate(45deg);
+    background-color: rgb(var(--mt-accent));
+    flex: none;
+  }
+
+  .mt__heading {
+    margin: 0;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: 'opsz' 144;
+    font-size: clamp(2.6rem, 8.5vw, 6.2rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+  }
+
+  .mt__heading-line {
+    display: block;
+  }
+
+  .mt__heading-line--accent {
+    font-style: italic;
+    color: rgb(var(--mt-accent));
+  }
+
+  .mt__stitch {
+    position: relative;
+    height: 2px;
+    width: 0;
+    margin: clamp(26px, 5vh, 48px) 0 clamp(30px, 5vh, 52px);
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgb(var(--mt-accent)) 0,
+      rgb(var(--mt-accent)) 8px,
+      transparent 8px,
+      transparent 15px
+    );
+    animation: mt-stitch-draw 1100ms cubic-bezier(0.65, 0, 0.35, 1) 700ms forwards;
+  }
+
+  .mt__stitch::after {
+    content: '';
+    position: absolute;
+    right: -4px;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    background-color: rgb(var(--mt-accent));
+    opacity: 0;
+    animation: mt-knot-in 300ms ease 1700ms forwards;
+  }
+
+  .mt__sub {
+    margin: 0;
+    max-width: 46ch;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: clamp(1rem, 1.5vw, 1.18rem);
+    line-height: 1.6;
+    color: rgb(var(--mt-fg) / 0.86);
+  }
+
+  .mt__sub p {
+    margin: 0;
+  }
+
+  .mt-reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: mt-fade-up 850ms cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms) forwards;
+  }
+
+  @keyframes mt-fade-up {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes mt-stitch-draw {
+    to {
+      width: min(440px, 72%);
+    }
+  }
+
+  @keyframes mt-knot-in {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes mt-swan-in {
+    to {
+      opacity: 0.08;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .mt__swan {
+      right: -28%;
+      width: 120vw;
+      animation-name: mt-swan-in-mobile;
+    }
+    @keyframes mt-swan-in-mobile {
+      to {
+        opacity: 0.06;
+      }
+    }
+    .mt__eyebrow {
+      letter-spacing: 0.32em;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mt-reveal,
+    .mt__swan,
+    .mt__stitch,
+    .mt__stitch::after {
+      animation: none !important;
+      opacity: 1;
+      transform: none;
+    }
+    .mt__swan {
+      opacity: 0.08;
+    }
+    .mt__stitch {
+      width: min(440px, 72%);
+    }
+    .mt__stitch::after {
+      opacity: 1;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Manutenzione Atelier",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo ufficiale",
+      "info": "Se caricato, sostituisce il cigno + lettering. Se vuoto, mostra il marchio cigno con la scritta."
+    },
+    {
+      "type": "text",
+      "id": "wordmark",
+      "label": "Lettering",
+      "default": "Sartoria Condotti"
+    },
+    {
+      "type": "header",
+      "content": "Lingue"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_lang",
+      "label": "Mostra selettore lingua (IT / EN)",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "Il testo italiano qui sotto è modificabile. La versione inglese è integrata nella sezione."
+    },
+    {
+      "type": "header",
+      "content": "Testo"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Napoli · Atelier · Dal 1954"
+    },
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Titolo · riga 1",
+      "default": "Stiamo prendendo"
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Titolo · riga 2 (corsivo oro)",
+      "default": "le misure."
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Sottotitolo",
+      "default": "<p>I nostri sarti stanno lavorando per offrirti un'esperienza online all'altezza di Sartoria Condotti.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Cromia"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Sfondo",
+      "default": "#14213D"
+    },
+    {
+      "type": "color",
+      "id": "fg_color",
+      "label": "Testo",
+      "default": "#F4EFE6"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accento (oro)",
+      "default": "#D4A24C"
+    },
+    {
+      "type": "header",
+      "content": "Cigno"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_swan",
+      "label": "Mostra cigno in filigrana",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
